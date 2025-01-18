@@ -14,6 +14,22 @@ debug_wrap:
 		exit 1; \
 	fi
 
+# Define project variables
+PROJECT_NAME = docker_test
+DOCKER_COMPOSE = docker compose
+
+
+build: ## Build the Docker container
+	$(DOCKER_COMPOSE) build
+
+
+up: ## Start the Docker container
+	$(DOCKER_COMPOSE) up -d
+
+down: ## Stop the Docker container
+	$(DOCKER_COMPOSE) down
+
+
 makemigrations: ## Make migrations
 	python manage.py makemigrations
 
@@ -21,7 +37,7 @@ migrate: makemigrations ## Apply migrations
 	python manage.py migrate
 
 runserver: migrate  ## Run the Django development server
-	python manage.py runserver 0.0.0.0:8000
+	python manage.py runserver 0.0.0.0:8002
 
 superuser: ## Create a superuser
 	@python manage.py createsuperuser --no-input

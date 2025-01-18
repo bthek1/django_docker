@@ -1,22 +1,26 @@
 services:
   web:
     build: .
-    command: python /code/manage.py runserver 0.0.0.0:8002
+    # command: python /code/manage.py runserver 0.0.0.0:8002
     volumes:
-      - .:/code
+      - .:/home/devuser/django_docker
     ports:
       - 8002:8002
     depends_on:
       - db
-    restart: always  # Ensure the web service restarts on computer reboot
-
+    restart: always
+    user: devuser  # Run the container as the devuser
+    environment:
+      - ENV_FILE=.env
+    stdin_open: true  # Keep the container open
+    tty: true         # Allocate a pseudo-TTY
   db:
     image: postgres:16
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     environment:
       - "POSTGRES_HOST_AUTH_METHOD=trust"
-    restart: always  # Ensure the db service restarts on computer reboot
+    restart: always
 
 volumes:
   postgres_data:
